@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gerenciamento de Pacotes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" th:href="@{/assets/imagens/icone.ico}" type="image/x-icon">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a th:href="@{/}" class="navbar-brand">
+        <img class="img-fluid mb-2 w-25" th:src="@{/assets/imagens/logotipo.png}" alt="Rota do sol" style="max-width: 150px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin}">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/dashboard_admin/clientes}">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/destinos}">Destinos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/hospedagens}">Hospedagens</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/voos}">Voos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/pacotes}">Pacotes <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Sair</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4">
+    <h4 class="mb-2">Gerenciamento de Pacotes</h4>
+    <a th:href="@{/dashboard_admin/pacotes/cadastrar}" class="btn btn-success btn-sm mb-4">Adicionar novo pacote</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Valor do Pacote</th>
+            <th>Hospedagem</th>
+            <th>Voo</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pacote : ${pacotes}">
+            <td th:text="${pacote.idPacote}"></td>
+            <td th:text="${pacote.valorPreco}"></td>
+            <td th:text="${pacote.hospedagem != null ? pacote.hospedagem.nomeHotel : 'N/A'}"></td>
+            <td th:text="${pacote.voo != null ? pacote.voo.companhiaAerea : 'N/A'}"></td>
+            <td>
+                <a th:href="@{/dashboard_admin/pacotes/editar(id=${pacote.idPacote})}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:href="@{/dashboard_admin/pacotes/excluir(id=${pacote.idPacote})}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

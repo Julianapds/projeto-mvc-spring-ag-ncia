@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - Cliente</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" th:href="@{/assets/imagens/icone.ico}" type="image/x-icon">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a th:href="@{/}" class="navbar-brand">
+        <img class="img-fluid mb-2 w-25" th:src="@{/assets/imagens/logotipo.png}" alt="Logo" style="max-width: 150px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/dashboard_cliente}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_cliente/criar_reserva}">Nova Reserva</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/perfil_cliente}">Perfil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Sair</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 th:text="'Olá, ' + ${nomeUsuario} + '.'">Olá, Cliente.</h1>
+    <p>Aqui você pode visualizar e gerenciar suas reservas.</p>
+    <div th:if="${reservas.isEmpty()}">
+        <p>Você ainda não tem reservas.</p>
+    </div>
+    <div th:unless="${reservas.isEmpty()}">
+        <h2>Suas Reservas</h2>
+        <ul class="list-group">
+            <li th:each="reserva : ${reservas}" class="list-group-item">
+                Reserva #[[${reserva.idReserva}]] -
+                <span th:if="${reserva.pacote != null}">
+                        <span th:if="${reserva.pacote.hospedagem != null}" th:text="${reserva.pacote.hospedagem.nomeHotel}"></span>
+                        <span th:if="${reserva.pacote.voo != null}" th:text="${' + ' + reserva.pacote.voo.companhiaAerea}"></span>
+                    </span>
+                <span th:unless="${reserva.pacote != null}">
+                        <span th:if="${reserva.hospedagem != null}" th:text="${reserva.hospedagem.nomeHotel}"></span>
+                        <span th:if="${reserva.voo != null}" th:text="${' / ' + reserva.voo.companhiaAerea}"></span>
+                    </span>
+                - Data da Reserva: [[${#dates.format(reserva.dataReserva, 'dd/MM/yyyy')}]]
+            </li>
+        </ul>
+    </div>
+    <div class="mt-4">
+        <p>Para alterações e cancelamento, entre em contato conosco <a th:href="@{/contatos}" class="text-primary">clicando aqui</a>.</p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

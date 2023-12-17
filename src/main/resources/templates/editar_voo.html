@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edição de Voo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" th:href="@{/assets/imagens/icone.ico}" type="image/x-icon">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a th:href="@{/}" class="navbar-brand">
+        <img class="img-fluid mb-2 w-25" th:src="@{/assets/imagens/logotipo.png}" alt="Rota do sol" style="max-width: 150px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/clientes}">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/destinos}">Destinos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/hospedagens}">Hospedagens</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/voos}">Voos <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard_admin/pacotes}">Pacotes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Sair</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4 mb-4">
+    <h4 class="mb-2">Edição de Voo</h4>
+    <form th:action="@{/dashboard_admin/voos/editar(id=${voo.idVoo})}" method="post">
+        <div class="form-group">
+            <label for="companhiaAerea">Companhia Aérea</label>
+            <input type="text" class="form-control" id="companhiaAerea" name="companhiaAerea" th:value="${voo.companhiaAerea}" placeholder="Companhia Aérea">
+        </div>
+        <div class="form-group">
+            <label for="dataPartida">Data Partida</label>
+            <input type="date" class="form-control" id="dataPartida" name="dataPartida" th:value="${#dates.format(voo.dataPartida, 'yyyy-MM-dd')}">
+        </div>
+        <div class="form-group">
+            <label for="dataChegada">Data Chegada</label>
+            <input type="date" class="form-control" id="dataChegada" name="dataChegada" th:value="${#dates.format(voo.dataChegada, 'yyyy-MM-dd')}">
+        </div>
+        <div class="form-group">
+            <label for="valorPreco">Valor do Voo</label>
+            <input type="number" class="form-control" id="valorPreco" name="valorPreco" th:value="${voo.valorPreco}" placeholder="Valor do Voo">
+        </div>
+        <div class="form-group">
+            <label for="imagemUrl">URL da Imagem</label>
+            <input type="text" class="form-control" id="imagemUrl" name="imagemUrl" th:value="${voo.imagemUrl}" placeholder="URL da imagem">
+        </div>
+        <div class="form-group">
+            <label for="destino">Destino</label>
+            <select class="form-control" id="destino" name="destino">
+                <option th:each="destino : ${destinos}" th:value="${destino.idDestino}" th:text="${destino.descricao}" th:selected="${destino.idDestino == voo.destino.idDestino}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <a th:href="@{/dashboard_admin/voos}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

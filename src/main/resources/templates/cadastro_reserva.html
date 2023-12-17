@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Criar Nova Reserva</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" th:href="@{/assets/imagens/icone.ico}" type="image/x-icon">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a th:href="@{/}" class="navbar-brand">
+        <img class="img-fluid mb-2 w-25" th:src="@{/assets/imagens/logotipo.png}" alt="Logo" style="max-width: 150px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/dashboard_cliente}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/cadastro_reserva}">Nova Reserva</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/perfil_cliente}">Perfil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Sair</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4">
+    <h1 th:text="'Olá, ' + ${nomeUsuario} + '.'">Criar Nova Reserva</h1>
+    <form th:action="@{/dashboard_cliente/criar_reserva}" method="post">
+        <div class="form-group">
+            <label for="tipoReserva">Tipo de Reserva</label>
+            <select class="form-control" id="tipoReserva" name="tipoReserva">
+                <option value="hospedagem">Hospedagem</option>
+                <option value="voo">Voo</option>
+                <option value="pacote">Pacote</option>
+            </select>
+        </div>
+        <div class="form-group" id="listaHospedagens" style="display:none;">
+            <label for="hospedagem">Hospedagem</label>
+            <select class="form-control" id="hospedagem" name="hospedagem">
+                <option th:each="hospedagem : ${hospedagens}" th:value="${hospedagem.idHospedagem}" th:text="${hospedagem.nomeHotel}"></option>
+            </select>
+        </div>
+        <div class="form-group" id="listaVoos" style="display:none;">
+            <label for="voo">Voo</label>
+            <select class="form-control" id="voo" name="voo">
+                <option th:each="voo : ${voos}" th:value="${voo.idVoo}" th:text="${voo.companhiaAerea}"></option>
+            </select>
+        </div>
+        <div class="form-group" id="listaPacotes" style="display:none;">
+            <label for="pacote">Pacote</label>
+            <select class="form-control" id="pacote" name="pacote">
+                <option th:each="pacote : ${pacotes}" th:value="${pacote.idPacote}"
+                        th:text="${pacote.hospedagem != null && pacote.voo != null ? pacote.hospedagem.nomeHotel + ' + ' + pacote.voo.companhiaAerea :
+                 pacote.hospedagem != null ? pacote.hospedagem.nomeHotel :
+                 pacote.voo != null ? pacote.voo.companhiaAerea : 'Pacote Indefinido'}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btnReservar" disabled>Reservar</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+     $('#tipoReserva').change(function() {
+         var selectedType = $(this).val();
+         $('#listaHospedagens, #listaVoos, #listaPacotes').hide();
+         $('#btnReservar').prop('disabled', true);
+
+         if (selectedType === 'hospedagem') {
+             $('#listaHospedagens').show();
+             checkSelection('#hospedagem');
+         } else if (selectedType === 'voo') {
+             $('#listaVoos').show();
+             checkSelection('#voo');
+         } else if (selectedType === 'pacote') {
+             $('#listaPacotes').show();
+             checkSelection('#pacote');
+         }
+     });
+
+     $('#hospedagem, #voo, #pacote').change(function() {
+         checkSelection(this);
+     });
+
+     function checkSelection(selector) {
+         if ($(selector).val() !== '') {
+             $('#btnReservar').prop('disabled', false);
+         } else {
+             $('#btnReservar').prop('disabled', true);
+         }
+     }
+ });
+</script>
+</body>
+</html>
